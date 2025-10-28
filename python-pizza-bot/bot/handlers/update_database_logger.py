@@ -1,13 +1,13 @@
 import sqlite3
 import os
 import json
-from bot.handler import Handler
+from bot.handlers.handler import Handler, HandlerStatus
 
-class DatabaseLogger(Handler):
+class UpdateDatabaseLogger(Handler):
     def can_handle(self, update: dict) -> bool:
-        return "message" in update and ("text" in update["message"] or "photo" in update["message"])
+        return True
 
-    def handle(self, update: dict) -> bool:
+    def handle(self, update: dict) -> HandlerStatus:
         connection = sqlite3.connect(os.getenv('SQLITE_DATABASE_PATH'))
         with connection:
             data = []
@@ -17,4 +17,4 @@ class DatabaseLogger(Handler):
                 data,
             )
         connection.close()
-        return True
+        return HandlerStatus.CONTINUE

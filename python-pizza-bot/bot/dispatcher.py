@@ -1,4 +1,4 @@
-from bot.handler import Handler
+from bot.handlers.handler import Handler
 
 class Dispatcher:
     def __init__(self):
