@@ -22,7 +22,7 @@ class PizzaSelection(Handler):
 
         pizza_name = callback_data.replace("pizza_", "").replace("_", " ").title()
         bot.database_client.update_user_order_json(telegram_id, {"pizza_name": pizza_name})
-        bot.database_client.update_user_state(telegram_id, "WAIT_FOR_PIZZA_NAME")
+        bot.database_client.update_user_state(telegram_id, "WAIT_FOR_PIZZA_SIZE")
 
         bot.telegram_client.answerCallbackQuery(update["callback_query"]["id"])
         bot.telegram_client.deleteMessage(
@@ -52,7 +52,7 @@ class PizzaSelection(Handler):
                                 "callback_data": "size_l"
                             },
                             {
-                                "text": "XL(35cm)",
+                                "text": "XL (35cm)",
                                 "callback_data": "size_xl"
                             },
                         ],
