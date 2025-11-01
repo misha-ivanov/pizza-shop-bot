@@ -32,7 +32,7 @@ class PizzaSelection(Handler):
 
         bot.telegram_client.sendMessage(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
-            text="Please choose pizza size",
+            text="🔎Please choose pizza size",
             reply_markup=json.dumps(
                 {
                     "inline_keyboard": [

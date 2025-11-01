@@ -41,7 +41,7 @@ class PizzaSize(Handler):
 
         bot.telegram_client.sendMessage(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
-            text="Please choose some drinks",
+            text="☕Please choose some drinks",
             reply_markup=json.dumps(
                 {
                     "inline_keyboard": [
@@ -65,14 +65,14 @@ class PizzaSize(Handler):
                                 "callback_data": "drink_black_coffee"
                             },
                         ],
-                                                [
+                        [
                             {
                                 "text": "Spring Water",
                                 "callback_data": "drink_spring_water"
                             },
                             {
                                 "text": "Fizzy Water",
-                                "callback_data": "drink_fizzy water"
+                                "callback_data": "drink_fizzy_water"
                             },
                         ],
                     ],

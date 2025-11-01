@@ -47,15 +47,16 @@ class DrinkSelection(Handler):
         drink_name = order_json.get("drink_name", "-")
 
         final_order = f"""
-            Please, check the order and approve it if everything is fine:
-            Pizza: {pizza_name}
-            Size: {pizza_size}
-            Drink: {drink_name}
-            """
+🤓Please, check the order and approve it if everything is fine:
+*Pizza:* {pizza_name}
+*Size:* {pizza_size}
+*Drink:* {drink_name}
+"""
 
         bot.telegram_client.sendMessage(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
             text=final_order,
+            parse_mode="Markdown",
             reply_markup=json.dumps(
                 {
                     "inline_keyboard": [

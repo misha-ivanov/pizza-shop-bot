@@ -27,7 +27,7 @@ class MessageStart(Handler):
 
         bot.telegram_client.sendMessage(
             chat_id=update["message"]["chat"]["id"],
-            text="Please choose pizza name",
+            text="🍕Please choose pizza name",
             reply_markup=json.dumps(
                 {
                     "inline_keyboard": [
