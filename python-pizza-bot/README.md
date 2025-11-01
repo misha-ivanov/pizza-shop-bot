@@ -1,0 +1,1 @@
+The simple emulation of Online Pizza Shop by Telegram Chat Bot
