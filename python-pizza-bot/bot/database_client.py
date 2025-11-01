@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import json
 
 from dotenv import load_dotenv
 
@@ -60,6 +61,14 @@ def update_user_state(telegram_id: int, state: str) -> None:
             connection.execute(
                 "UPDATE users SET state = ? WHERE telegram_id = ?",
                 (state, telegram_id)
+            )
+
+def update_user_order_json(telegram_id: int, order_json: dict) -> None:
+    with sqlite3.connect(os.getenv("SQLITE_DATABASE_PATH")) as connection:
+        with connection:
+            connection.execute(
+                "UPDATE users SET order_json = ? WHERE telegram_id = ?",
+                (json.dumps(order_json, ensure_ascii=False, indent=2), telegram_id)
             )
 
 def get_user(telegram_id: int) -> dict | None:
