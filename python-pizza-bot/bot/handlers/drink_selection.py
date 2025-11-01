@@ -29,7 +29,7 @@ class DrinkSelection(Handler):
             "drink_fizzy_water": "Fizzy Water",
         }
 
-        drink_name = drink_mapping.get(callback_data)
+        drink_name = drink_mapping.get(callback_data, "Not in menu")
         order_json["drink_name"] = drink_name
         bot.database_client.update_user_order_json(telegram_id, order_json)
         bot.database_client.update_user_state(telegram_id, "WAIT_FOR_ORDER_APPROVE")
@@ -39,5 +39,40 @@ class DrinkSelection(Handler):
         bot.telegram_client.deleteMessage(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
             message_id=update["callback_query"]["message"]["message_id"],
+        )
+
+        # Finalize the order and parse it into string
+        pizza_name = order_json.get("pizza_name", "-")
+        pizza_size = order_json.get("pizza_size", "-")
+        drink_name = order_json.get("drink_name", "-")
+
+        final_order = f"""
+            Please, check the order and approve it if everything is fine:
+            Pizza: {pizza_name}
+            Size: {pizza_size}
+            Drink: {drink_name}
+            """
+
+        bot.telegram_client.sendMessage(
+            chat_id=update["callback_query"]["message"]["chat"]["id"],
+            text=final_order,
+            reply_markup=json.dumps(
+                {
+                    "inline_keyboard": [
+                        [
+                            {
+                                "text": "Approve",
+                                "callback_data": "approve_true"
+                            },
+                        ],
+                        [
+                            {
+                                "text": "Start again",
+                                "callback_data": "approve_false"
+                            },
+                        ]
+                    ],
+                },
+            ),
         )
         return HandlerStatus.STOP
