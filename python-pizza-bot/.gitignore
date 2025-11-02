@@ -3,3 +3,4 @@ bot.sqlite
 .venv/
 bot/__pycache__/
 bot/handlers/__pycache__/
+bot/domain/__pycache__/
