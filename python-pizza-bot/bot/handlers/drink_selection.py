@@ -9,10 +9,10 @@ class DrinkSelection(Handler):
     def can_handle(self, update: dict, state: str, order_json: dict) -> bool:
         if "callback_query" not in update:
             return False
-        
+
         if state != "WAIT_FOR_DRINKS":
             return False
-        
+
         callback_data = update["callback_query"]["data"]
         return callback_data.startswith("drink_")
 
@@ -61,17 +61,11 @@ class DrinkSelection(Handler):
                 {
                     "inline_keyboard": [
                         [
-                            {
-                                "text": "Approve",
-                                "callback_data": "approve_true"
-                            },
+                            {"text": "Approve", "callback_data": "approve_true"},
                         ],
                         [
-                            {
-                                "text": "Start again",
-                                "callback_data": "approve_false"
-                            },
-                        ]
+                            {"text": "Start again", "callback_data": "approve_false"},
+                        ],
                     ],
                 },
             ),

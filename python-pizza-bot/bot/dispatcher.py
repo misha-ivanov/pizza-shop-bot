@@ -2,6 +2,7 @@ import json
 import bot.database_client
 from bot.handlers.handler import Handler, HandlerStatus
 
+
 class Dispatcher:
     def __init__(self):
         self._handlers: list[Handler] = []
@@ -27,7 +28,7 @@ class Dispatcher:
         if order_json is None:
             order_json = "{}"
         order_json = json.loads(order_json)
-        
+
         for handler in self._handlers:
             if handler.can_handle(update, user_state, order_json):
                 status = handler.handle(update, user_state, order_json)

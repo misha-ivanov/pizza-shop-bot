@@ -9,10 +9,10 @@ class PizzaSize(Handler):
     def can_handle(self, update: dict, state: str, order_json: dict) -> bool:
         if "callback_query" not in update:
             return False
-        
+
         if state != "WAIT_FOR_PIZZA_SIZE":
             return False
-        
+
         callback_data = update["callback_query"]["data"]
         return callback_data.startswith("size_")
 
@@ -24,7 +24,7 @@ class PizzaSize(Handler):
             "size_s": "S (20cm)",
             "size_m": "M (25cm)",
             "size_l": "L (30cm)",
-            "size_xl": "XL (35cm)"
+            "size_xl": "XL (35cm)",
         }
 
         pizza_size = size_mapping.get(callback_data)
@@ -46,33 +46,24 @@ class PizzaSize(Handler):
                 {
                     "inline_keyboard": [
                         [
-                            {
-                                "text": "Mint Tea",
-                                "callback_data": "drink_mint_tea"
-                            },
-                            {
-                                "text": "Black Tea",
-                                "callback_data": "drink_black_tea"
-                            },
+                            {"text": "Mint Tea", "callback_data": "drink_mint_tea"},
+                            {"text": "Black Tea", "callback_data": "drink_black_tea"},
                         ],
                         [
-                            {
-                                "text": "Latte",
-                                "callback_data": "drink_latte"
-                            },
+                            {"text": "Latte", "callback_data": "drink_latte"},
                             {
                                 "text": "Black Coffee",
-                                "callback_data": "drink_black_coffee"
+                                "callback_data": "drink_black_coffee",
                             },
                         ],
                         [
                             {
                                 "text": "Spring Water",
-                                "callback_data": "drink_spring_water"
+                                "callback_data": "drink_spring_water",
                             },
                             {
                                 "text": "Fizzy Water",
-                                "callback_data": "drink_fizzy_water"
+                                "callback_data": "drink_fizzy_water",
                             },
                         ],
                     ],
