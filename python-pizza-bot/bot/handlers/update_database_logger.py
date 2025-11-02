@@ -1,21 +1,26 @@
-import sqlite3
-import os
-import json
 from bot.handlers.handler import Handler, HandlerStatus
+from bot.domain.messenger import Messenger
+from bot.domain.storage import Storage
 
 
 class UpdateDatabaseLogger(Handler):
-    def can_handle(self, update: dict, state: str, order_json: dict) -> bool:
+    def can_handle(
+        self,
+        update: dict,
+        state: str,
+        order_json: dict,
+        storage: Storage,
+        messenger: Messenger,
+    ) -> bool:
         return True
 
-    def handle(self, update: dict, state: str, order_json: dict) -> HandlerStatus:
-        connection = sqlite3.connect(os.getenv("SQLITE_DATABASE_PATH"))
-        with connection:
-            data = []
-            data.append((json.dumps(update, ensure_ascii=False, indent=3),))
-            connection.executemany(
-                "INSERT INTO telegram_updates (payload) VALUES (?)",
-                data,
-            )
-        connection.close()
+    def handle(
+        self,
+        update: dict,
+        state: str,
+        order_json: dict,
+        storage: Storage,
+        messenger: Messenger,
+    ) -> HandlerStatus:
+        storage.persist_update(update)
         return HandlerStatus.CONTINUE
