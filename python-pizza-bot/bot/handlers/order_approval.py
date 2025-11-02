@@ -55,7 +55,7 @@ Text "/start" for new order.
             bot.database_client.clear_user_state_and_order(telegram_id)
             bot.database_client.update_user_state(telegram_id, "WAIT_FOR_PIZZA_NAME")
 
-            new_order_text = f"""
+            new_order_text = """
 🔄Let's try again!
 Please choose pizza name:
 """
