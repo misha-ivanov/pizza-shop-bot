@@ -11,15 +11,23 @@ class Storage(ABC):
         pass
 
     @abstractmethod
+    def clear_user_order_json(self, telegram_id: int) -> None:
+        pass
+
+    @abstractmethod
+    def clear_user_state(self, telegram_id: int) -> None:
+        pass
+
+    @abstractmethod
+    def update_user_order_json(self, telegram_id: int, order_json: dict) -> None:
+        pass
+
+    @abstractmethod
     def update_user_state(self, telegram_id: int, state: str) -> None:
         pass
 
     @abstractmethod
     def persist_update(self, update: dict) -> None:
-        pass
-
-    @abstractmethod
-    def update_user_order_json(self, telegram_id: int, order_json: dict) -> None:
         pass
 
     @abstractmethod
