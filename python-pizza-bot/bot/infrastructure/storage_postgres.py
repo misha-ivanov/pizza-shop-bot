@@ -6,6 +6,7 @@ import pg8000
 from dotenv import load_dotenv
 
 from bot.domain.storage import Storage
+from bot.domain.order_state import OrderState
 
 load_dotenv()
 
@@ -56,7 +57,7 @@ class StoragePostgres(Storage):
                 )
             conn.commit()
 
-    def update_user_state(self, telegram_id: int, state: str) -> None:
+    def update_user_state(self, telegram_id: int, state: OrderState) -> None:
         with self._get_connection() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(

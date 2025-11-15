@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from bot.domain.order_state import OrderState
 
 
 class Storage(ABC):
@@ -23,7 +24,7 @@ class Storage(ABC):
         pass
 
     @abstractmethod
-    def update_user_state(self, telegram_id: int, state: str) -> None:
+    def update_user_state(self, telegram_id: int, state: OrderState) -> None:
         pass
 
     @abstractmethod
