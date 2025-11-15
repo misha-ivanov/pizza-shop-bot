@@ -76,10 +76,10 @@ class DrinkSelection(Handler):
                 {
                     "inline_keyboard": [
                         [
-                            {"text": "Approve", "callback_data": "approve_true"},
+                            {"text": "Approve", "callback_data": "order_approve"},
                         ],
                         [
-                            {"text": "Start again", "callback_data": "approve_false"},
+                            {"text": "Start again", "callback_data": "order_restart"},
                         ],
                     ],
                 },

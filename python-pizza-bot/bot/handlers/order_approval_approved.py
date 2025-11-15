@@ -49,7 +49,7 @@ class OrderApprovalApprovedHandler(Handler):
 
         pizza_name = order_json.get("pizza_name", "Unknown")
         pizza_size = order_json.get("pizza_size", "Unknown")
-        drink = order_json.get("drink", "Unknown")
+        drink_name = order_json.get("drink_name", "Unknown")
 
         # Calculate prices (in kopecks for RUB)
         # Base prices - these can be customized
@@ -66,8 +66,8 @@ class OrderApprovalApprovedHandler(Handler):
             {"label": f"Pizza: {pizza_name} ({pizza_size})", "amount": pizza_price}
         ]
 
-        if drink and drink != "No drinks":
-            prices.append({"label": f"Drink: {drink}", "amount": drink_price})
+        if drink_name:
+            prices.append({"label": f"Drink: {drink_name}", "amount": drink_price})
 
         # Create order payload
         order_payload = json.dumps(
@@ -75,7 +75,7 @@ class OrderApprovalApprovedHandler(Handler):
                 "telegram_id": telegram_id,
                 "pizza_name": pizza_name,
                 "pizza_size": pizza_size,
-                "drink": drink,
+                "drink_name": drink_name,
             }
         )
 
@@ -83,7 +83,7 @@ class OrderApprovalApprovedHandler(Handler):
         messenger.send_invoice(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
             title="Pizza Order",
-            description=f"Pizza: {pizza_name}, Size: {pizza_size}, Drink: {drink}",
+            description=f"Pizza: {pizza_name}, Size: {pizza_size}, Drink: {drink_name}",
             payload=order_payload,
             provider_token=os.getenv("YOOKASSA_TOKEN"),
             currency="RUB",
