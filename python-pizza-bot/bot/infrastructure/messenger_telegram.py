@@ -8,12 +8,15 @@ load_dotenv()
 
 
 class MessengerTelegram(Messenger):
+    def _get_telegram_base_uri(self) -> str:
+        return f"https://api.telegram.org/bot{os.getenv('TELEGRAM_TOKEN')}"
+
     def _make_request(self, method: str, **kwargs) -> dict:
         json_data = json.dumps(kwargs).encode("utf-8")
 
         request = urllib.request.Request(
             method="POST",
-            url=f"{os.getenv("TELEGRAM_BASE_URI")}/{method}",
+            url=f"{self._get_telegram_base_uri()}/{method}",
             data=json_data,
             headers={"Content-Type": "application/json"},
         )
