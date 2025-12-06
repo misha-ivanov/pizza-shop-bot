@@ -34,7 +34,7 @@ async def test_message_start_handler():
     clear_user_data_called = False
     update_user_state_called = False
 
-    async def clear_user_state_and_order_json(telegram_id: int) -> None:
+    async def clear_user_order_json(telegram_id: int) -> None:
         assert telegram_id == 12345
 
         nonlocal clear_user_data_called
@@ -60,7 +60,7 @@ async def test_message_start_handler():
 
     mock_storage = Mock(
         {
-            "clear_user_state_and_order_json": clear_user_state_and_order_json,
+            "clear_user_state_and_order_json": clear_user_order_json,
             "update_user_state": update_user_state,
             "get_user": get_user,
         }
