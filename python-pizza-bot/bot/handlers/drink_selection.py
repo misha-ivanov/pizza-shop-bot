@@ -1,4 +1,5 @@
 import json
+import asyncio
 
 from bot.domain.messenger import Messenger
 from bot.domain.storage import Storage
@@ -24,7 +25,7 @@ class DrinkSelection(Handler):
         callback_data = update["callback_query"]["data"]
         return callback_data.startswith("drink_")
 
-    def handle(
+    async def handle(
         self,
         update: dict,
         state: OrderState,
@@ -45,15 +46,16 @@ class DrinkSelection(Handler):
         }
 
         drink_name = drink_mapping.get(callback_data, "Not in menu")
+
         order_json["drink_name"] = drink_name
-        storage.update_user_order_json(telegram_id, order_json)
-        storage.update_user_state(telegram_id, OrderState.WAIT_FOR_ORDER_APPROVE)
+        chat_id = update["callback_query"]["message"]["chat"]["id"]
+        message_id = update["callback_query"]["message"]["message_id"]
+        callback_query_id = update["callback_query"]["id"]
 
-        messenger.answer_callback_query(update["callback_query"]["id"])
-
-        messenger.delete_message(
-            chat_id=update["callback_query"]["message"]["chat"]["id"],
-            message_id=update["callback_query"]["message"]["message_id"],
+        await asyncio.gather(
+            storage.update_user_order_json(telegram_id, order_json),
+            storage.update_user_state(telegram_id, OrderState.WAIT_FOR_ORDER_APPROVE),
+            messenger.answer_callback_query(callback_query_id),
         )
 
         # Finalize the order and parse it into string
@@ -67,22 +69,27 @@ class DrinkSelection(Handler):
 *Size:* {pizza_size}
 *Drink:* {drink_name}
 """
-
-        messenger.send_message(
-            chat_id=update["callback_query"]["message"]["chat"]["id"],
-            text=final_order,
-            parse_mode="Markdown",
-            reply_markup=json.dumps(
-                {
-                    "inline_keyboard": [
-                        [
-                            {"text": "Approve", "callback_data": "order_approve"},
+        await asyncio.gather(
+            messenger.delete_message(chat_id=chat_id, message_id=message_id),
+            messenger.send_message(
+                chat_id=update["callback_query"]["message"]["chat"]["id"],
+                text=final_order,
+                parse_mode="Markdown",
+                reply_markup=json.dumps(
+                    {
+                        "inline_keyboard": [
+                            [
+                                {"text": "Approve", "callback_data": "order_approve"},
+                            ],
+                            [
+                                {
+                                    "text": "Start again",
+                                    "callback_data": "order_restart",
+                                },
+                            ],
                         ],
-                        [
-                            {"text": "Start again", "callback_data": "order_restart"},
-                        ],
-                    ],
-                },
+                    },
+                ),
             ),
         )
         return HandlerStatus.STOP

@@ -1,4 +1,5 @@
 import json
+import asyncio
 import os
 
 from dotenv import load_dotenv
@@ -29,7 +30,7 @@ class OrderApprovalApprovedHandler(Handler):
         callback_data = update["callback_query"]["data"]
         return callback_data == "order_approve"
 
-    def handle(
+    async def handle(
         self,
         update: dict,
         state: OrderState,
@@ -39,13 +40,15 @@ class OrderApprovalApprovedHandler(Handler):
     ) -> HandlerStatus:
         telegram_id = update["callback_query"]["from"]["id"]
 
-        messenger.answer_callback_query(update["callback_query"]["id"])
-        messenger.delete_message(
-            chat_id=update["callback_query"]["message"]["chat"]["id"],
-            message_id=update["callback_query"]["message"]["message_id"],
-        )
+        chat_id = update["callback_query"]["message"]["chat"]["id"]
+        message_id = update["callback_query"]["message"]["message_id"]
+        callback_query_id = update["callback_query"]["id"]
 
-        storage.update_user_state(telegram_id, OrderState.WAIT_FOR_PAYMENT)
+        await asyncio.gather(
+            messenger.answer_callback_query(callback_query_id),
+            messenger.delete_message(chat_id=chat_id, message_id=message_id),
+            storage.update_user_state(telegram_id, OrderState.WAIT_FOR_PAYMENT),
+        )
 
         pizza_name = order_json.get("pizza_name", "Unknown")
         pizza_size = order_json.get("pizza_size", "Unknown")
@@ -80,7 +83,7 @@ class OrderApprovalApprovedHandler(Handler):
         )
 
         # Send invoice
-        messenger.send_invoice(
+        await messenger.send_invoice(
             chat_id=update["callback_query"]["message"]["chat"]["id"],
             title="Pizza Order",
             description=f"Pizza: {pizza_name}, Size: {pizza_size}, Drink: {drink_name}",
