@@ -61,27 +61,11 @@ class StorageSqlite(Storage):
                         "INSERT INTO users (telegram_id) VALUES (?)", (telegram_id,)
                     )
 
-    def clear_user_state_and_order_json(self, telegram_id: int) -> None:
-        with sqlite3.connect(os.getenv("SQLITE_DATABASE_PATH")) as connection:
-            with connection:
-                connection.execute(
-                    "UPDATE users SET state = NULL, order_json = NULL WHERE telegram_id = ?",
-                    (telegram_id,),
-                )
-
     def clear_user_order_json(self, telegram_id: int) -> None:
         with sqlite3.connect(os.getenv("SQLITE_DATABASE_PATH")) as connection:
             with connection:
                 connection.execute(
-                    "UPDATE users SET order_json = NULL WHERE telegram_id = ?",
-                    (telegram_id,),
-                )
-
-    def clear_user_state(self, telegram_id: int) -> None:
-        with sqlite3.connect(os.getenv("SQLITE_DATABASE_PATH")) as connection:
-            with connection:
-                connection.execute(
-                    "UPDATE users SET state = NULL WHERE telegram_id = ?",
+                    "UPDATE users SET state = NULL, order_json = NULL WHERE telegram_id = ?",
                     (telegram_id,),
                 )
 

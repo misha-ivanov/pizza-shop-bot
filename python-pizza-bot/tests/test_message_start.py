@@ -60,7 +60,7 @@ async def test_message_start_handler():
 
     mock_storage = Mock(
         {
-            "clear_user_state_and_order_json": clear_user_order_json,
+            "clear_user_order_json": clear_user_order_json,
             "update_user_state": update_user_state,
             "get_user": get_user,
         }
