@@ -2,9 +2,9 @@ name: STYLE AND FUNCTIONAL TESTS
 
 on:
   push:
-    branches: [main]
+    branches: [main, 12-aiogram]
   pull_request:
-    branches: [main]
+    branches: [main, 12-aiogram]
 
 jobs:
   code-quality:
