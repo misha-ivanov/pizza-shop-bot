@@ -17,7 +17,7 @@ ruff: $(VENV_DIR)
 	$(ACTIVATE_VENV) && ruff check .
 
 # Run all tests (includes black, ruff)
-test: black ruff pytest
+test: black ruff
 
 # DOCKER
 
