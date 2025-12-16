@@ -1,1 +1,1 @@
-The simple emulation of Online Pizza Shop by Telegram Chat Bot
+The simple example of echo bot by aiogram
