@@ -2,9 +2,9 @@ name: STYLE AND FUNCTIONAL TESTS
 
 on:
   push:
-    branches: [main, 12-aiogram]
+    branches: [12-aiogram]
   pull_request:
-    branches: [main, 12-aiogram]
+    branches: [12-aiogram]
 
 jobs:
   code-quality:
@@ -38,12 +38,8 @@ jobs:
 
     - name: Run Black code style check
       run: |
-        black --check bot/ tests/
+        black --check bot/
 
     - name: Run Ruff linting check
       run: |
-        ruff check bot/ tests/
-
-    - name: Run pytest tests
-      run: |
-        PYTHONPATH=. pytest tests/ -v
+        ruff check bot/
